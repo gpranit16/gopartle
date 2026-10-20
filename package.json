@@ -4,6 +4,7 @@
   "private": true,
   "description": "GoPratle Event Requirement Posting Platform - Full Stack Monorepo",
   "scripts": {
+    "dev": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"cyan,magenta\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:backend": "npm --prefix backend run dev",
     "dev:frontend": "npm --prefix frontend run dev",
     "build:backend": "npm --prefix backend run build",
@@ -23,5 +24,8 @@
     "event-tech"
   ],
   "author": "Full-Stack Developer Intern Candidate",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^10.0.6"
+  }
 }
