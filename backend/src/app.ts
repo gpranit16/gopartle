@@ -28,8 +28,12 @@ export const createApp = (): Express => {
         callback: (err: Error | null, allow?: boolean) => void
       ) => {
         // Allow requests with no origin (e.g., mobile apps, curl, server-to-server)
+        if (!origin) {
+          return callback(null, true);
+        }
+
         if (
-          allowedOrigins.indexOf(origin) !== -1 ||
+          allowedOrigins.includes(origin) ||
           origin.endsWith('.vercel.app') ||
           origin.includes('localhost') ||
           env.NODE_ENV !== 'production'
