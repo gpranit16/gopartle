@@ -28,8 +28,12 @@ export const createApp = (): Express => {
         callback: (err: Error | null, allow?: boolean) => void
       ) => {
         // Allow requests with no origin (e.g., mobile apps, curl, server-to-server)
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1 || env.NODE_ENV !== 'production') {
+        if (
+          allowedOrigins.indexOf(origin) !== -1 ||
+          origin.endsWith('.vercel.app') ||
+          origin.includes('localhost') ||
+          env.NODE_ENV !== 'production'
+        ) {
           return callback(null, true);
         }
         return callback(new Error('Blocked by CORS policy'));
