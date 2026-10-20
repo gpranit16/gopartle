@@ -10,11 +10,17 @@ const envSchema = z.object({
   FRONTEND_URL: z.string().default('http://localhost:3000'),
 });
 
-const parsedEnv = envSchema.safeParse(process.env);
+let parsedEnv: z.infer<typeof envSchema>;
 
-if (!parsedEnv.success) {
-  console.error('❌ Invalid environment variables:', parsedEnv.error.format());
+try {
+  parsedEnv = envSchema.parse(process.env);
+} catch (error) {
+  if (error instanceof z.ZodError) {
+    console.error('❌ Invalid environment variables:', error.format());
+  } else {
+    console.error('❌ Failed to parse environment variables:', error);
+  }
   process.exit(1);
 }
 
-export const env = parsedEnv.data;
+export const env = parsedEnv;
